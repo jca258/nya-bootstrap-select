@@ -36,7 +36,13 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           content = jqLite(tAttrs.titleTpl);
         } else if(tAttrs.title) {
           // use title attribute value.
-          content = document.createTextNode(tAttrs.title);
+          var title;
+          try {
+            title = $parse(tAttrs.title)();
+          } catch(err) {
+            title = tAttrs.title;
+          }
+          content = document.createTextNode(title);
         } else if(localizedText.defaultNoneSelectionTpl){
           // use localized text template.
           content = jqLite(localizedText.defaultNoneSelectionTpl);
