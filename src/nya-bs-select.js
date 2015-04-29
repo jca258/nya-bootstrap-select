@@ -286,6 +286,13 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           if($element.hasClass('open') && typeof liHeight === 'undefined') {
             calcMenuSize();
           }
+          if($element.hasClass('open') &&
+            dropdownContainer.offset().top + dropdownContainer.height() >
+            window.pageYOffset + window.innerHeight) {
+            $element.addClass('open-up');
+          } else {
+            $element.removeClass('open-up');
+          }
           if($attrs.liveSearch === 'true' && $element.hasClass('open')) {
             searchBox.children().eq(0)[0].focus();
             nyaBsOptionNode = findFocus(true);
