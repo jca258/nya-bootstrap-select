@@ -690,7 +690,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
             calcMenuSize();
           }
           if($element.hasClass('open') &&
-            dropdownContainer.offset().top + dropdownContainer.height() >
+            dropdownToggle.offset().top + dropdownToggle.height() + dropdownContainer.height() >
             window.pageYOffset + window.innerHeight) {
             $element.addClass('open-up');
           } else {
