@@ -282,12 +282,13 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
         });
         dropdownToggle.on('click', function() {
           var nyaBsOptionNode;
+          var offset = 90;
           $element.toggleClass('open');
           if($element.hasClass('open') && typeof liHeight === 'undefined') {
             calcMenuSize();
           }
           if($element.hasClass('open') &&
-            dropdownToggle.offset().top + dropdownToggle.height() + dropdownContainer.height() >
+            offset + dropdownToggle.offset().top + dropdownToggle.height() + dropdownContainer.height() >
             window.pageYOffset + window.innerHeight) {
             $element.addClass('open-up');
           } else {
