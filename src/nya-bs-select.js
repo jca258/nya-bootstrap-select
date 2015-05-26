@@ -130,6 +130,9 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           previousTabIndex,
           valueExpFn,
           valueExpGetter = $parse(nyaBsSelectCtrl.valueExp),
+          keySearchTimeout = 150,
+          delayedKeySearch,
+          keySearchQuery = '',
           isMultiple = typeof $attrs.multiple !== 'undefined';
 
         // find element from current $element root. because the compiled element may be detached from DOM tree by ng-if or ng-switch.
@@ -406,7 +409,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           var keyCode = event.keyCode;
 
           if(keyCode !== 27 && keyCode !== 13 && keyCode !== 38 && keyCode !== 40) {
-            // we only handle special keys. don't waste time to traverse the dom tree.
+            keySearch(keyCode);
             return;
           }
 
@@ -568,6 +571,21 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
             }
           }
         });
+
+        function keySearch(key) {
+          var character = String.fromCharCode(key);
+          keySearchQuery += character;
+          if(delayedKeySearch) {
+            console.log(keySearchQuery);
+            keySearchTimeout += 100;
+            $timeout.cancel(delayedKeySearch);
+          }
+          delayedKeySearch = $timeout(function() {
+            keySearchQuery = keySearchQuery.toLowerCase();
+            console.log('searching for %s', keySearchQuery);
+            keySearchQuery = '';
+          }, keySearchTimeout);
+        }
 
         function findActive() {
           var list = dropdownMenu.children(),
