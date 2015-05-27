@@ -407,6 +407,11 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
         $element.on('keydown', function(event){
           var keyCode = event.keyCode;
 
+          // tab key
+          if(keyCode === 9) {
+            return;
+          }
+
           if(keyCode !== 27 && keyCode !== 13 && keyCode !== 38 && keyCode !== 40) {
             if(tAttrs.liveSearch) {
               return;
