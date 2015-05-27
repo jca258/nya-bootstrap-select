@@ -130,7 +130,6 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           previousTabIndex,
           valueExpFn,
           valueExpGetter = $parse(nyaBsSelectCtrl.valueExp),
-          keySearchTimeout = 150,
           delayedKeySearch,
           keySearchQuery = '',
           isMultiple = typeof $attrs.multiple !== 'undefined';
@@ -409,8 +408,11 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           var keyCode = event.keyCode;
 
           if(keyCode !== 27 && keyCode !== 13 && keyCode !== 38 && keyCode !== 40) {
-            keySearch(keyCode);
-            return;
+            if(tAttrs.liveSearch) {
+              return;
+            } else {
+              keySearch(keyCode);
+            }
           }
 
           // prevent a click event to be fired.
@@ -574,17 +576,41 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
 
         function keySearch(key) {
           var character = String.fromCharCode(key);
-          keySearchQuery += character;
+          var options = dropdownMenu.children();
+          var optionsKeys = Object.keys(options);
+          optionsKeys.pop();
+          var len = optionsKeys.length;
+          var i = 0;
+
+          keySearchQuery += character.toLowerCase();
+
           if(delayedKeySearch) {
             console.log(keySearchQuery);
-            keySearchTimeout += 100;
             $timeout.cancel(delayedKeySearch);
           }
+
+
+          while (i < len) {
+            var el = angular.element(options[optionsKeys[i]]);
+            if(el.hasClass('disabled')) {
+              break;
+            }
+            if(el.text().trim().toLowerCase().indexOf(keySearchQuery) === 0) {
+              if($element.hasClass('open')) {
+                setFocus(options[optionsKeys[i]]);
+                break;
+              }
+              if(!$element.hasClass('open')) {
+                selectOption(el);
+                break;
+              }
+            }
+            i++;
+          }
+
           delayedKeySearch = $timeout(function() {
-            keySearchQuery = keySearchQuery.toLowerCase();
-            console.log('searching for %s', keySearchQuery);
             keySearchQuery = '';
-          }, keySearchTimeout);
+          }, 300);
         }
 
         function findActive() {
@@ -668,6 +694,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
          * @param nyaBsOption the jqLite wrapped `nya-bs-option` element.
          */
         function selectOption(nyaBsOption) {
+          console.log(nyaBsOption);
           var value,
             viewValue,
             modelValue = ngCtrl.$modelValue,
