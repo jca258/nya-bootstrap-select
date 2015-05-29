@@ -535,6 +535,18 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           valueExpGetter = $parse(nyaBsSelectCtrl.valueExp),
           delayedKeySearch,
           keySearchQuery = '',
+          numPadMap = {
+            '96': 48,
+            '97': 49,
+            '98': 50,
+            '99': 51,
+            '100': 52,
+            '101': 53,
+            '102': 54,
+            '103': 55,
+            '104': 56,
+            '105': 57
+          },
           isMultiple = typeof $attrs.multiple !== 'undefined';
 
         // find element from current $element root. because the compiled element may be detached from DOM tree by ng-if or ng-switch.
@@ -982,8 +994,13 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           }
         });
 
+        function numPadTranslate(key) {
+
+        }
+
         function keySearch(key) {
-          var character = String.fromCharCode(key);
+          var code = numPadMap.hasOwnProperty(key) ? numPadMap[key] : key;
+          var character = String.fromCharCode(code);
           var options = dropdownMenu.children();
           var optionsKeys = Object.keys(options);
           optionsKeys.pop();
