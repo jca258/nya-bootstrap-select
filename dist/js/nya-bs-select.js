@@ -1,5 +1,5 @@
 /**
- * nya-bootstrap-select v2.0.17
+ * nya-bootstrap-select v2.0.18
  * Copyright 2014 Nyasoft
  * Licensed under MIT license
  */
@@ -704,9 +704,11 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           if($element.hasClass('open') && typeof liHeight === 'undefined') {
             calcMenuSize();
           }
+          var dropdownToggleBoundingRect = dropdownToggle[0].getBoundingClientRect();
+          var dropdownContainerBoundingRect = dropdownContainer[0].getBoundingClientRect();
           if($element.hasClass('open') &&
-            offset + dropdownToggle.offset().top + dropdownToggle.height() + dropdownContainer.height() >
-            window.pageYOffset + window.innerHeight) {
+            offset + dropdownToggleBoundingRect.top + dropdownToggleBoundingRect.height + dropdownContainerBoundingRect.height >
+            window.innerHeight) {
             $element.addClass('open-up');
           } else {
             $element.removeClass('open-up');
