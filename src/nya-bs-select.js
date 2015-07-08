@@ -778,11 +778,11 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
           var scopeOfOption;
           if(valueExpFn) {
             // here we use the scope bound by ourselves in the nya-bs-option.
-            scopeOfOption = nyaBsOption.data('isolateScope');
+            scopeOfOption = nyaBsOption.data('isolateScope') || {};
             return valueExpFn(scopeOfOption);
           } else {
             if(nyaBsSelectCtrl.valueIdentifier || nyaBsSelectCtrl.keyIdentifier) {
-              scopeOfOption = nyaBsOption.data('isolateScope');
+              scopeOfOption = nyaBsOption.data('isolateScope') || {};
               return scopeOfOption[nyaBsSelectCtrl.valueIdentifier] || scopeOfOption[nyaBsSelectCtrl.keyIdentifier];
             } else {
               return nyaBsOption.attr('value');
