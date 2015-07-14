@@ -1,10 +1,10 @@
 {
   "name": "nya-bootstrap-select",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "description": "An angular directive wraps bootstrap-select",
   "repository": {
     "type": "git",
-    "url": "git://github.com/lordfriend/nya-bootstrap-select.git"
+    "url": "git://github.com/jca258/nya-bootstrap-select.git"
   },
   "devDependencies": {
     "groundskeeper": "^0.1.11",
