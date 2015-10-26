@@ -14,7 +14,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
     '<input type="text" class="form-control">' +
     '</div>';
 
-  var DROPDOWN_MENU = '<ul class="dropdown-menu inner"></ul>';
+  var DROPDOWN_MENU = '<ul role="listbox" class="dropdown-menu inner"></ul>';
 
   var NO_SEARCH_RESULT = '<li class="no-search-result"><span>NO SEARCH RESULT</span></li>';
 
