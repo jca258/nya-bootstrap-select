@@ -1,5 +1,5 @@
 /**
- * nya-bootstrap-select v2.0.21
+ * nya-bootstrap-select v2.0.22
  * Copyright 2014 Nyasoft
  * Licensed under MIT license
  */
@@ -525,6 +525,9 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
 
       dropdownContainer.append(dropdownMenu);
 
+      // initialize a11y attrs
+      dropdownToggle.attr('aria-expanded', false).attr('aria-pressed', false);
+
       tElement.append(dropdownToggle);
       tElement.append(dropdownContainer);
 
@@ -682,6 +685,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
               return;
             }
             selectOption(nyaBsOption);
+            setA11yExpandedToggle(false);
           }
         });
 
@@ -692,6 +696,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
               $element.triggerHandler('blur');
             }
             $element.removeClass('open');
+            setA11yExpandedToggle(false);
           }
         });
         
@@ -730,6 +735,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
               setFocus(nyaBsOptionNode);
             }
           }
+          setA11yExpandedToggle(true);
         });
 
         // live search
@@ -892,6 +898,8 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
                   setFocus(nyaBsOptionNode);
                 }
               }
+
+              setA11yExpandedToggle(true);
             }
 
             // press enter or escape to de-active dropdown
@@ -909,6 +917,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
               }
               $element.removeClass('open');
               event.stopPropagation();
+              setA11yExpandedToggle(false);
 
             } else if(keyCode === 38) {
               event.stopPropagation();
@@ -940,6 +949,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
               liElement = jqLite(event.target.parentNode);
               if(liElement.hasClass('nya-bs-option')) {
                 selectOption(liElement);
+                setA11yExpandedToggle(false);
                 if(!isMultiple) {
                   dropdownToggle[0].focus();
                 }
@@ -992,6 +1002,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
               liElement = findActive();
               if(liElement) {
                 selectOption(liElement);
+                setA11yExpandedToggle(false);
                 if(!isMultiple) {
                   dropdownToggle[0].focus();
                 }
@@ -1333,6 +1344,11 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
             dropdownMenu.css('overflow-y', 'auto');
           }
 
+        }
+
+        // set a11y attributes on dropdown toggle button
+        function setA11yExpandedToggle(value) {
+          dropdownToggle.attr('aria-expanded', value).attr('aria-pressed', value);
         }
 
       };
