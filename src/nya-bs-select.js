@@ -429,7 +429,11 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', 'nyaBsC
 
           // tab key
           if(keyCode === 9) {
-            return;
+            if($element.hasClass('open')) {
+              $element.removeClass('open');
+              setA11yExpandedToggle(false);
+            }
+            $element.triggerHandler('blur');
           }
 
           if(keyCode !== 27 && keyCode !== 13 && keyCode !== 38 && keyCode !== 40) {
